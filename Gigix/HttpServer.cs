@@ -13,7 +13,7 @@ namespace Gigix
 			return new HttpServerSocket(this);
 		}
 
-		class HttpServerSocket : TcpServerSocket
+		private class HttpServerSocket : TcpServerSocket
 		{
 			private Server.HttpRequestMessage _message;
 
@@ -39,10 +39,11 @@ namespace Gigix
 
 			private void Message_Completed(object sender, EventArgs e)
 			{
-				var message = new Server.HttpResponseMessage();
-				message.StartLine.Status = 404;
-				message.Content = new Content.TextContent("sorry! page not found :-(");
-				this.Write(message.ToArray());
+				var response = new Server.HttpResponseMessage();
+				response.StartLine.Status = 404;
+				response.Content = new Content.TextContent("sorry! page not found :-(");
+
+				this.Write(response.ToArray());
 			}
 
 			protected override void OnRead(byte[] data)
